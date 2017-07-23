@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Manualfac
 {
@@ -6,8 +7,11 @@ namespace Manualfac
     {
         #region Please modify the following code to pass the test
 
+        Dictionary<Type, Func<IComponentContext, object>> funcs = new Dictionary<Type, Func<IComponentContext, object>>();
+
+        bool hasBeenBuilt = false;
         /*
-         * Hello, boys and girls. The container builder is a very good guy to store
+         //* Hello, boys and girls. The container builder is a very good guy to store
          * all the definitions for instantiation as well as lifetime managing. Now,
          * let's forget about lifetime management.
          * 
@@ -19,12 +23,17 @@ namespace Manualfac
 
         public void Register<T>(Func<IComponentContext, T> func)
         {
-            throw new NotImplementedException();
+            this.funcs[typeof(T)] = a => func(a);
         }
 
         public IComponentContext Build()
         {
-            throw new NotImplementedException();
+            if (hasBeenBuilt)
+            {
+                throw new InvalidOperationException();
+            }
+            hasBeenBuilt = true;
+            return new ComponentContext(this.funcs);
         }
 
         #endregion

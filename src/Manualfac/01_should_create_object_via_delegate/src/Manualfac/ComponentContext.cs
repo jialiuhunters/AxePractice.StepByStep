@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Manualfac
 {
@@ -6,6 +7,7 @@ namespace Manualfac
     {
         #region Please modify the following code to pass the test
 
+        Dictionary<Type, Func<IComponentContext, object>> funcs;
         /*
          * A ComponentContext is used to resolve a component. Since the component
          * is created by the ContainerBuilder, it brings all the registration
@@ -13,10 +15,18 @@ namespace Manualfac
          * 
          * You can add non-public member functions or member variables as you like.
          */
+        internal ComponentContext(Dictionary<Type, Func<IComponentContext, object>> funcs)
+        {
+            this.funcs = funcs;
+        }
 
         public object ResolveComponent(Type type)
         {
-            throw new NotImplementedException();
+            if (funcs.ContainsKey(type))
+            {
+                return funcs[type](this);
+            }
+            throw new DependencyResolutionException();
         }
 
         #endregion
