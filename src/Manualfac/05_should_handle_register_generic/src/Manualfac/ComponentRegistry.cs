@@ -39,7 +39,13 @@ namespace Manualfac
              * return fasle. If we have found one. Then create a concrete component registration
              * and add it to serviceInfos for speed acceleration.
              */
-            throw new NotImplementedException();
+            registration = sources.Select(s => s.RegistrationFor(service)).FirstOrDefault();
+            if (registration == null)
+            {
+                registration = null;
+                return false;
+            }
+            return true;
 
             #endregion
         }
