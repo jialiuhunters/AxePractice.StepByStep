@@ -6,28 +6,43 @@ namespace Manualfac.Services
     {
         #region Please modify the following code to pass the test
 
+        Type type;
+        string name;
         /*
          * This class is used as a key for registration by both type and name.
          */
 
         public TypedNameService(Type serviceType, string name)
         {
-            throw new NotImplementedException();
+            this.type = serviceType;
+            this.name = name;
         }
 
         public bool Equals(TypedNameService other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+            {
+                return false;
+            }
+            return this.type == other.type && this.name == other.name;
         }
 
         public override bool Equals(object obj)
         {
-            throw new NotImplementedException();
+            if (obj == null)
+            {
+                return false;
+            }
+            if (obj is TypedNameService)
+            {
+                return Equals((TypedNameService) obj);
+            }
+            return false;
         }
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return this.type.GetHashCode() ^ this.name.GetHashCode();
         }
 
         #endregion
