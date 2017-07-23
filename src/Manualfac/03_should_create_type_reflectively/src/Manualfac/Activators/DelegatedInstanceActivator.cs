@@ -6,6 +6,7 @@ namespace Manualfac.Activators
     {
         #region Please modify the following code to pass the test
 
+        Func<IComponentContext, object> func;
         /*
          * We have create an interface for activators so that we can extend them easily.
          * Please migrate the delegate activator to this class.
@@ -15,12 +16,12 @@ namespace Manualfac.Activators
 
         public DelegatedInstanceActivator(Func<IComponentContext, object> func)
         {
-            throw new NotImplementedException();
+            this.func = func;
         }
 
         public object Activate(IComponentContext componentContext)
         {
-            throw new NotImplementedException();
+            return this.func(componentContext);
         }
 
         #endregion
