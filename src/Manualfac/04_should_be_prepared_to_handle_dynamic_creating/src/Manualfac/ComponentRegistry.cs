@@ -16,8 +16,7 @@ namespace Manualfac
              * We have moved the odd method from Container to ComponentRegistry. Please
              * implement the method.
              */
-
-            throw new NotImplementedException();
+            this.serviceInfos[registration.Service] = registration;
 
             #endregion
         }
@@ -29,9 +28,13 @@ namespace Manualfac
             /*
              * Please implement the method to get registration from the registered services.
              */
-
-            registration = null;
-            throw new NotImplementedException();
+            if (!this.serviceInfos.ContainsKey(service))
+            {
+                registration = null;
+                throw new DependencyResolutionException();
+            }
+            registration = this.serviceInfos[service];
+            return true;
 
             #endregion
         }
