@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Reflection;
+using System.Linq;
+using Manualfac.Services;
 
 namespace Manualfac.Activators
 {
@@ -22,7 +25,16 @@ namespace Manualfac.Activators
 
         public object Activate(IComponentContext componentContext)
         {
-            throw new NotImplementedException();
+            ConstructorInfo[] constructorInfos = serviceType.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
+            if (constructorInfos.Length != 1)
+            {
+                throw new DependencyResolutionException();
+            }
+            ParameterInfo[] parameterInfos = constructorInfos[0].GetParameters();
+            object[] parameters = parameterInfos
+                .Select(p => componentContext.ResolveComponent(new TypedService(p.ParameterType)))
+                .ToArray();
+            return Activator.CreateInstance(serviceType, parameters);
         }
 
         #endregion
