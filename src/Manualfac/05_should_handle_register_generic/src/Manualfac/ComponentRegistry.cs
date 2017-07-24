@@ -45,6 +45,7 @@ namespace Manualfac
                 registration = null;
                 return false;
             }
+            Register(registration);
             return true;
 
             #endregion
