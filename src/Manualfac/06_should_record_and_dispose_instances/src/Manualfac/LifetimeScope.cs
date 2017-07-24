@@ -16,13 +16,18 @@ namespace Manualfac
         {
             #region Please modifies the following code to pass the test
 
+            if (this.IsDisposed)
+            {
+                throw new ObjectDisposedException(GetType().FullName);
+            }
             /*
              * The lifetime scope will track lifetime for instances created.
              */
-
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             ComponentRegistration componentRegistration = GetComponentRegistration(service);
-            return componentRegistration.Activator.Activate(this);
+            object resolveComponent = componentRegistration.Activator.Activate(this);
+            this.disposer.AddItemsToDispose(resolveComponent);
+            return resolveComponent;
 
             #endregion
         }
@@ -35,8 +40,7 @@ namespace Manualfac
              * Create a new lifetime scope. The created scope has no relationship except the
              * component registry.
              */
-
-            throw new NotImplementedException();
+            return new LifetimeScope(this.componentRegistry);
 
             #endregion
         }
