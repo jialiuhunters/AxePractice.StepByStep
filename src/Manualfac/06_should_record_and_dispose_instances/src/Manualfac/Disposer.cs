@@ -7,7 +7,7 @@ namespace Manualfac
     class Disposer : Disposable
     {
         #region Please implements the following methods
-        List<Object> items = new List<object>();
+        Stack<IDisposable> items = new Stack<IDisposable>();
 
         /*
          * The disposer is used for disposing all disposable items added when it is disposed.
@@ -15,17 +15,21 @@ namespace Manualfac
 
         public void AddItemsToDispose(object item)
         {
-            items.Add(item);
+            var disposable = item as IDisposable;
+            if (disposable != null)
+            {
+                items.Push(disposable);
+            }
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                var disposableItems = this.items.Select(i => i as IDisposable).Where(i => i != null).ToList();
-                foreach (IDisposable disposableItem in disposableItems)
+                if (items.Count > 0)
                 {
-                    disposableItem.Dispose();
+                    var disposable = items.Pop();
+                    disposable.Dispose();
                 }
             }
             base.Dispose(disposing);
