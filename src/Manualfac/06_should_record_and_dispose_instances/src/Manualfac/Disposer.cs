@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Manualfac
 {
@@ -32,6 +31,7 @@ namespace Manualfac
                     disposable.Dispose();
                 }
             }
+            this.items.TrimExcess();
             base.Dispose(disposing);
         }
 
