@@ -25,7 +25,7 @@ namespace Manualfac
 
             #region Please initialize root scope
 
-            throw new NotImplementedException();
+            RootScope = parent?.RootScope ?? parent;
 
             #endregion
         }
@@ -54,10 +54,25 @@ namespace Manualfac
              * Simple enough huh? The Sharing property will help you to determine whether the activated
              * instace be shared.
              */
-
             #region Please implement this method
-
-            throw new NotImplementedException();
+            if (registration == null)
+            {
+                throw new ArgumentNullException(nameof(registration));
+            }
+            if (registration.Sharing != InstanceSharing.Shared)
+            {
+                var instance = registration.Activator.Activate(this);
+                this.Disposer.AddItemsToDispose(instance);
+                return instance;
+            }
+            if (!this.sharedInstances.ContainsKey(registration.Service) || this.sharedInstances[registration.Service] == null)
+            {
+                var instance = registration.Activator.Activate(this);
+                this.sharedInstances[registration.Service] = instance;
+                this.Disposer.AddItemsToDispose(instance);
+                return instance;
+            }
+            return this.sharedInstances[registration.Service];
 
             #endregion
         }
@@ -69,9 +84,7 @@ namespace Manualfac
             /*
              * Create a child life-time scope in this method.
              */
-
-            throw new NotImplementedException();
-
+            return new LifetimeScope(this.componentRegistry, this);
             #endregion
         }
 
@@ -83,8 +96,12 @@ namespace Manualfac
              * This method will try get component registration from component registry.
              * We extract this method for isolation of responsibility.
              */
-
-            throw new NotImplementedException();
+            ComponentRegistration componentRegistration;
+            if (!this.componentRegistry.TryGetRegistration(service, out componentRegistration))
+            {
+                throw new DependencyResolutionException("component registration not found");
+            }
+            return componentRegistration;
 
             #endregion
         }
