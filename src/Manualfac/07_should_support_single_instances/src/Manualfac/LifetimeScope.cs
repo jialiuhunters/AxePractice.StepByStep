@@ -25,8 +25,7 @@ namespace Manualfac
 
             #region Please initialize root scope
 
-            RootScope = parent?.RootScope ?? this;
-
+            RootScope = parent?.RootScope ?? parent;
             #endregion
         }
 
