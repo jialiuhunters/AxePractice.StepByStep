@@ -9,16 +9,13 @@
   <Class Name="Manualfac.LifetimeScope">
     <Position X="4.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAIAAAAHAAAAAAABAAAAQAAAAAAAAAAAEAAABAAAI=</HashCode>
+      <HashCode>AAIAIAAAAGAAAAAQABAAAAQAAAAAAAAAAAEAAABAAAI=</HashCode>
       <FileName>LifetimeScope.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="componentRegistry" />
       <Property Name="Disposer" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Field Name="sharedInstances" />
-    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Manualfac.ComponentRegistry" HideInheritanceLine="true">
