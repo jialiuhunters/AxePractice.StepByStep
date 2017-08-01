@@ -10,17 +10,21 @@ namespace Manualfac
     {
         const int HaveBeenDisposed = 1;
         int disposedStatus;
+        object syncObject = new object();
 
         public void Dispose()
         {
-            if (disposedStatus == HaveBeenDisposed)
+            lock (syncObject)
             {
-                return;
-            }
-            disposedStatus = HaveBeenDisposed;
+                if (disposedStatus == HaveBeenDisposed)
+                {
+                    return;
+                }
+                disposedStatus = HaveBeenDisposed;
 
-            Dispose(true);
-            GC.SuppressFinalize(this);
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void Dispose(bool disposing)

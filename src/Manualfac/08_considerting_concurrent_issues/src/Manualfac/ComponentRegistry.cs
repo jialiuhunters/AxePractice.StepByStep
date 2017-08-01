@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Manualfac
 {
@@ -30,6 +31,9 @@ namespace Manualfac
 
         public bool TryGetRegistration(Service service, out ComponentRegistration registration)
         {
+            Interlocked.MemoryBarrier(); // promise cpu cash is valid
+            int previous = Interlocked.Exchange(ref disposedStatues, HaveBeenDisposed);
+
             lock (syncObj)
             {
                 if (serviceInfos.ContainsKey(service))
