@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LocalApi.Routing;
 
 namespace LocalApi
@@ -16,6 +17,7 @@ namespace LocalApi
 
         #region Please implement the following method
 
+        IDependencyScope dependencyScope;
         /*
          * For each http context, at most one dependency scope will be created. In
          * this method, you should create and cache dependency scope.
@@ -27,12 +29,18 @@ namespace LocalApi
          */
         public IDependencyScope GetDependencyScope()
         {
-            throw new NotImplementedException();
+            if (dependencyScope == null)
+            {
+                this.Configuration.EnsureInitialized();
+                this.dependencyScope = this.Configuration.DependencyResolver.BeginScope();
+            }
+            return dependencyScope;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            this.dependencyScope?.Dispose();
+            this.Configuration.Dispose();
         }
 
         #endregion

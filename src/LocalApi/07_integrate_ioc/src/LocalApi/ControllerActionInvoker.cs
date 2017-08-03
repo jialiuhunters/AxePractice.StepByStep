@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Lifetime;
 using System.Threading.Tasks;
 using LocalApi.MethodAttributes;
 using LocalApi.Routing;
@@ -31,7 +34,7 @@ namespace LocalApi
              * A dependency scope will be generated for each request. And it will manage the
              * lifetime scopes for all items created during this request.
              */
-            IDependencyScope scope = null;
+            IDependencyScope scope = context.GetDependencyScope();
             #endregion
 
             try

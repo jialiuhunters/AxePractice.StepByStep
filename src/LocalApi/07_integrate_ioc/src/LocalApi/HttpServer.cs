@@ -36,10 +36,12 @@ namespace LocalApi
             {
                 request.SetRequestContext(configuration, matchedRoute);
                 HttpResponseMessage response = await ControllerActionInvoker.InvokeAction(request);
+                request.DisposeRequestContext();
                 return response;
             }
             catch (Exception)
             {
+                request.DisposeRequestContext();
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
 

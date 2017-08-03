@@ -7,6 +7,7 @@ namespace Manualfac.LocalApiIntegration
     {
         #region Please implement the following class
 
+        Container container;
         /*
          * We should create a manualfac dependency resolver so that we can integrate it
          * to LocalApi.
@@ -16,22 +17,22 @@ namespace Manualfac.LocalApiIntegration
 
         public ManualfacDependencyResolver(Container rootScope)
         {
-            throw new NotImplementedException();
+            this.container = rootScope;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            this.container.Dispose();
         }
 
         public object GetService(Type type)
         {
-            throw new NotImplementedException();
+            return this.container.Resolve(type);
         }
 
         public IDependencyScope BeginScope()
         {
-            throw new NotImplementedException();
+            return new ManualfacDependencyScope(container.BeginLifetimeScope());
         }
 
         #endregion
